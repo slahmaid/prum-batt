@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شكراً لك - Prumysl</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #000000;
+            --success-color: #27ae60;
+            --bg-color: #f9f9f9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Amiri Quran', serif;
+            background-color: var(--bg-color);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .thank-you-card {
+            background: white;
+            max-width: 600px;
+            width: 100%;
+            padding: 50px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .checkmark-wrapper {
+            width: 80px; height: 80px; background-color: #e8f8f0; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;
+        }
+
+        .checkmark-icon {
+            width: 40px; height: 40px; fill: var(--success-color);
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+        }
+
+        h1 { font-size: 32px; margin-bottom: 10px; color: #1a1a1a; }
+        .order-id { color: #888; font-size: 14px; margin-bottom: 30px; font-family: sans-serif; }
+
+        .next-steps { background-color: #f8f8f8; border-radius: 10px; padding: 20px; margin-bottom: 30px; text-align: right; }
+        .step-item { display: flex; align-items: flex-start; margin-bottom: 15px; }
+        .step-item:last-child { margin-bottom: 0; }
+        .step-number {
+            background-color: var(--primary-color); color: white; width: 25px; height: 25px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; margin-left: 15px; flex-shrink: 0; margin-top: 3px;
+        }
+        .step-text h4 { font-size: 18px; margin-bottom: 5px; }
+        .step-text p { font-size: 14px; color: #666; line-height: 1.5; }
+
+        .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn { padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; transition: 0.3s; display: inline-block; }
+        .btn-home { background-color: var(--primary-color); color: white; }
+        .btn-whatsapp { background-color: #25D366; color: white; }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+
+        @media (max-width: 500px) {
+            .thank-you-card { padding: 30px 20px; }
+            h1 { font-size: 26px; }
+            .btn-group { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="thank-you-card">
+        <div class="checkmark-wrapper">
+            <svg class="checkmark-icon" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+        </div>
+
+        <h1>تم استلام طلبك بنجاح!</h1>
+        <p class="order-id">رقم الطلب: #<span id="orderNum">...</span></p>
+
+        <div class="next-steps">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-text">
+                    <h4>تأكيد الطلب</h4>
+                    <p>سيتصل بك فريقنا خلال 24 ساعة لتأكيد العنوان والطلب.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-text">
+                    <h4>يرجى الرد على الهاتف</h4>
+                    <p>من الضروري الرد على الهاتف ليتم شحن طلبيتك في أقرب وقت.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-text">
+                    <h4>الشحن والاستلام</h4>
+                    <p>الدفع سيكون عند الاستلام بعد معاينة المنتج.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a href="index.html" class="btn btn-home">العودة للرئيسية</a>
+            <a href="https://wa.me/212600000000" class="btn btn-whatsapp">تواصل معنا عبر واتساب</a>
+        </div>
+    </div>
+
+    <script>
+        // Reads the 'id' from the URL (e.g., thank-you.html?id=ORD-12345)
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('id');
+        
+        if (orderId) {
+            document.getElementById('orderNum').innerText = orderId;
+        } else {
+            // Fallback if no ID is found
+            document.getElementById('orderNum').innerText = Math.floor(Math.random() * 90000) + 10000;
+        }
+        
+        console.log("Purchase Event Triggered");
+    </script>
+
+</body>
+</html>
