@@ -93,6 +93,19 @@
         .feature-icon { width: 50px; height: 50px; margin-bottom: 15px; fill: var(--primary-color); }
         .feature-title { font-size: 20px; margin-bottom: 10px; font-family: var(--font-heading); }
         
+        /* Trigger 3: Compatibility Tag Style */
+        .compatibility-tag { display: inline-block; background: #f0f0f0; color: #555; padding: 4px 10px; border-radius: 4px; font-size: 12px; margin-top: 5px; font-weight: bold; }
+
+        /* Trigger 2: Savings Bar Chart Style */
+        .savings-box { background: #fff; padding: 25px 20px; border-radius: 12px; margin: 0 auto; box-shadow: var(--shadow-card); max-width: 600px; text-align: center; }
+        .bar-chart { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .bar-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .bar-track { flex-grow: 1; background: #eee; border-radius: 6px; height: 30px; position: relative; overflow: hidden; }
+        .bar-fill { height: 100%; display: flex; align-items: center; padding-right: 10px; color: #fff; font-size: 12px; font-weight: bold; }
+        .bar-fill.red { background-color: #e74c3c; width: 95%; }
+        .bar-fill.green { background-color: #27ae60; width: 45%; }
+        .bar-label { font-weight: bold; font-size: 14px; width: 80px; text-align: left; }
+
         /* --- MOBILE SCROLL SNAP --- */
         @media (max-width: 768px) {
             .mobile-scroll-container {
@@ -193,6 +206,19 @@
             cursor: pointer; font-family: var(--font-body);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
+        
+        /* Trigger 5: Guarantee Text Style */
+        .guarantee-text {
+            color: #27ae60;
+            font-weight: 700;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 12px;
+            border: 1px dashed #27ae60;
+            padding: 8px;
+            border-radius: 8px;
+            background: #f0fff4;
+        }
 
         /* --- FOOTER --- */
         .site-footer { background: #111; color: #888; padding: 40px 20px 20px; text-align: center; font-size: 14px; }
@@ -255,7 +281,9 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">الماء سخون ديما<br>وبأقل تكلفة!</h1>
-            <p class="hero-subtitle">بطاريات كبيرة (Type D) لسخان الماء: شرارة قوية، تدوم طويلاً، وقابلة للشحن.</p>
+            
+            <p class="hero-subtitle">وداعاً لمفاجآت الماء البارد في الصباح. بطاريات Prumysl تهنيك من "الحجر تقادا" وتضمن لك دوش سخون ديما.</p>
+            
             <a href="#order" class="hero-cta">اطلبها الآن</a>
         </div>
     </section>
@@ -298,6 +326,7 @@
                     </div>
                     
                     <button type="submit" id="topSubmitBtn" class="submit-btn">أرسل الطلب الآن</button>
+                    <p class="guarantee-text">✅ ضمان الرضا: جرب المنتج قبل ما تخلص</p>
                 </form>
             </div>
         </div>
@@ -311,6 +340,7 @@
                     <svg class="feature-icon" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
                     <h3 class="feature-title">شرارة قوية</h3>
                     <p style="font-size:14px;color:#666;">قوة 1.5V ثابتة لتشغيل السخان فوراً.</p>
+                    <span class="compatibility-tag">متوافق مع (Junkers, Fagor, Chaffoteaux...)</span>
                 </div>
                 <div class="feature-card">
                     <svg class="feature-icon" viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
@@ -321,6 +351,28 @@
                     <svg class="feature-icon" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
                     <h3 class="feature-title">توفير المال</h3>
                     <p style="font-size:14px;color:#666;">علبة واحدة تعوض 1000 بطارية عادية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="savings-section">
+        <div class="container">
+            <div class="savings-box">
+                <h3 style="font-family: var(--font-heading); font-size: 22px;">استثمار ذكي vs تضييع المال</h3>
+                <div class="bar-chart">
+                    <div class="bar-row">
+                        <span class="bar-label">بطاريات عادية</span>
+                        <div class="bar-track">
+                            <div class="bar-fill red">300 درهم/سنة</div>
+                        </div>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">Prumysl</span>
+                        <div class="bar-track">
+                            <div class="bar-fill green">149 درهم مرة واحدة</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -359,7 +411,7 @@
                 <div class="mobile-scroll-item">
                     <div class="review-card">
                         <div class="stars">★★★★★</div>
-                        <p class="review-text">"من نهار ركبت هاد الحجر تهنيت. الماء سخون دغيا."</p>
+                        <p class="review-text">"صراحة هماوني! كنت ديما كنوجد مشكل مع الشوفو في البرد. ملي ركبت هاد الحجر، الشرارة ولات مجهدة والماء كيسخن دغيا. الله يرحم الوالدين."</p>
                         <div class="reviewer-info">
                             <div class="avatar-circle">R</div>
                             <div>
@@ -448,7 +500,7 @@
                     </div>
                     
                     <button type="submit" id="submitBtn" class="submit-btn">أرسل الطلب الآن</button>
-                    <p style="text-align:center; margin-top:15px; font-size:13px; color:#777;">الدفع عند الاستلام والتوصيل مجاني</p>
+                    <p class="guarantee-text">✅ ضمان الرضا: جرب المنتج قبل ما تخلص</p>
                 </form>
             </div>
         </div>
