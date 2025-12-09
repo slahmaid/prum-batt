@@ -347,9 +347,7 @@
                     </div>
                 </div>
 
-                <div class="section-header-center" style="margin-bottom: 20px;">
-                    <h2>استفد من العرض الحصري</h2>
-                </div>
+                <div class="section-header-center"><h2>استفد من العرض الحصري</h2></div>
                 <form id="topOrderForm" action="#" method="POST">
                     <div class="offer-options">
                         <div class="offer-card">
@@ -460,7 +458,7 @@
                 <div class="gallery-item mobile-scroll-item"><img src="img/Feature-2.jpg" alt="USB" loading="lazy"></div>
                 <div class="gallery-item mobile-scroll-item"><img src="img/Feature-3.jpg" alt="تركيب" loading="lazy"></div>
                 <div class="gallery-item mobile-scroll-item"><img src="img/Feature-4.jpg" alt="حجم" loading="lazy"></div>
-                </div>
+            </div>
         </div>
     </section>
 
@@ -717,12 +715,12 @@
 
                 const orderId = 'ORD-' + Math.floor(Math.random() * 100000);
                 const success = await sendOrderToBin({
-                    id: orderId,
-                    name: formData.get('fullname'),
-                    phone: phone,
-                    city: formData.get('city'),
-                    offer: formData.get('offer') || formData.get('offer-top'),
-                    date: new Date().toISOString()
+                    Order_ID: orderId,
+                    Customer_Name: formData.get('fullname'),
+                    Phone_Number: phone,
+                    City_Address: formData.get('city'),
+                    Price: formData.get('offer') || formData.get('offer-top'),
+                    Order_Date: new Date().toISOString()
                 });
 
                 if(success) window.location.href = `thank-you.html?id=${orderId}`;
