@@ -55,7 +55,13 @@
             background: linear-gradient(90deg, #d32f2f, #c0392b); color: #fff;
             display: flex; align-items: center; justify-content: center;
             font-size: 13px; font-weight: 700; z-index: 2000; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            
+            /* SMART HEADER TRANSITION */
+            transition: transform 0.3s ease;
         }
+        /* Hide state for scroll down */
+        .announcement-bar.is-hidden { transform: translateY(-100%); }
+
         .announcement-text { animation: slideDownFade 0.8s ease-out; display: flex; align-items: center; gap: 5px; }
         @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -64,7 +70,13 @@
             background-color: var(--secondary-color); height: 60px; width: 100%; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; 
             top: var(--announcement-height); z-index: 1000; 
+            
+            /* SMART HEADER TRANSITION */
+            transition: transform 0.3s ease;
         }
+        /* Hide state for scroll down - Moves up by 100px to clear the top area */
+        .site-header.is-hidden { transform: translateY(-120px); }
+
         .header-content { max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
         .logo img { max-height: 40px; width: auto; }
         .header-cta { background-color: var(--primary-color); color: var(--secondary-color); padding: 8px 20px; font-size: 15px; border-radius: 8px; font-weight: 700; }
@@ -108,14 +120,57 @@
         .bar-fill.green { background-color: #27ae60; width: 45%; }
         .bar-label { font-weight: bold; font-size: 14px; width: 80px; text-align: left; }
 
-        /* --- INFINITE AUTO-SCROLL --- */
+        /* --- MOBILE SCROLL BEHAVIOR SPLIT (Gallery vs Reviews) --- */
         @media (max-width: 768px) {
-            .marquee-wrapper { overflow: hidden; width: 100%; mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent); }
-            .mobile-scroll-container { display: flex !important; flex-wrap: nowrap !important; gap: 20px; width: max-content; animation: scroll-rtl 30s linear infinite; padding: 0 10px; }
-            .mobile-scroll-container:hover, .mobile-scroll-container:active { animation-play-state: paused; }
-            .mobile-scroll-item { flex: 0 0 280px; width: 280px; scroll-snap-align: unset; }
+            
+            /* 1. REVIEWS (Marquee - Infinite Scroll) */
+            .marquee-wrapper { 
+                overflow: hidden; width: 100%; 
+                mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent); 
+                -webkit-mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent); 
+            }
+            .reviews-grid.mobile-scroll-container { 
+                display: flex !important; flex-wrap: nowrap !important; 
+                gap: 20px; width: max-content; 
+                animation: scroll-rtl 30s linear infinite; 
+                padding: 0 10px; 
+            }
+            .reviews-grid.mobile-scroll-container:hover, 
+            .reviews-grid.mobile-scroll-container:active { animation-play-state: paused; }
+            
+            /* 2. GALLERY (Manual Snap Scroll) */
+            .gallery-grid.mobile-scroll-container {
+                display: flex !important;
+                flex-wrap: nowrap !important;
+                gap: 15px;
+                padding-bottom: 20px;
+                margin: 0 -15px;
+                padding-left: 15px; padding-right: 15px;
+                
+                /* Manual Snap Logic */
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                animation: none !important; /* Disable Auto-Scroll */
+                
+                /* Hide Scrollbar */
+                scrollbar-width: none; 
+                -ms-overflow-style: none;
+            }
+            .gallery-grid.mobile-scroll-container::-webkit-scrollbar { display: none; }
+            
+            /* Generic Items */
+            .mobile-scroll-item { flex: 0 0 280px; width: 280px; }
+            
+            /* Gallery Specific Item */
+            .gallery-grid .mobile-scroll-item {
+                flex: 0 0 85%; /* Bigger for gallery */
+                width: 85%;
+                scroll-snap-align: center;
+            }
         }
+        
         @keyframes scroll-rtl { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
+        
         @media (min-width: 769px) {
             .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
             .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -319,7 +374,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">رقم الهاتف</label>
-                        <input type="tel" id="top-phone" name="phone" class="form-input" placeholder="06XXXXXXXX" required autocomplete="tel">
+                        <input type="tel" id="top-phone" name="phone" class="form-input" placeholder="06XXXXXXXX" required autocomplete="tel" inputmode="numeric" pattern="[0-9]*">
                     </div>
                     <div class="form-group">
                         <label class="form-label">المدينة</label>
@@ -400,19 +455,12 @@
     <section class="gallery-section">
         <div class="container">
             <div class="section-header-center"><h2>صور المنتج</h2></div>
-            <div class="marquee-wrapper">
-                <div class="gallery-grid mobile-scroll-container">
-                    <div class="gallery-item mobile-scroll-item"><img src="img/Feature-1.jpg" alt="بطارية" loading="lazy"></div>
-                    <div class="gallery-item mobile-scroll-item"><img src="img/Feature-2.jpg" alt="USB" loading="lazy"></div>
-                    <div class="gallery-item mobile-scroll-item"><img src="img/Feature-3.jpg" alt="تركيب" loading="lazy"></div>
-                    <div class="gallery-item mobile-scroll-item"><img src="img/Feature-4.jpg" alt="حجم" loading="lazy"></div>
-                    
-                    <div class="gallery-item mobile-scroll-item"><img src="img/Feature-1.jpg" alt="بطارية" loading="lazy"></div>
-                    <div class="gallery-item mobile-scroll-item"><img src="img/Feature-2.jpg" alt="USB" loading="lazy"></div>
-                    <div class="gallery-item mobile-scroll-item"><img src="img/Feature-3.jpg" alt="تركيب" loading="lazy"></div>
-                    <div class="gallery-item mobile-scroll-item"><img src="img/Feature-4.jpg" alt="حجم" loading="lazy"></div>
+            <div class="gallery-grid mobile-scroll-container">
+                <div class="gallery-item mobile-scroll-item"><img src="img/Feature-1.jpg" alt="بطارية" loading="lazy"></div>
+                <div class="gallery-item mobile-scroll-item"><img src="img/Feature-2.jpg" alt="USB" loading="lazy"></div>
+                <div class="gallery-item mobile-scroll-item"><img src="img/Feature-3.jpg" alt="تركيب" loading="lazy"></div>
+                <div class="gallery-item mobile-scroll-item"><img src="img/Feature-4.jpg" alt="حجم" loading="lazy"></div>
                 </div>
-            </div>
         </div>
     </section>
 
@@ -442,7 +490,6 @@
                             <div class="reviewer-info"><div class="avatar-circle">M</div><div><h4>محمد ت.</h4><span class="verified-badge">✓ شراء مؤكد</span></div></div>
                         </div>
                     </div>
-
                     <div class="mobile-scroll-item">
                         <div class="review-card">
                             <div class="stars">★★★★★</div>
@@ -519,7 +566,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">رقم الهاتف</label>
-                        <input type="tel" id="phone" name="phone" class="form-input" required autocomplete="tel">
+                        <input type="tel" id="phone" name="phone" class="form-input" required autocomplete="tel" inputmode="numeric" pattern="[0-9]*">
                         <div id="phone-error" style="color:red;display:none;font-size:12px;margin-top:5px;">رقم الهاتف غير صحيح</div>
                     </div>
                     <div class="form-group">
@@ -552,52 +599,56 @@
 
     <script>
         // --- SENSORY REINFORCEMENT (AUDIO + HAPTICS) ---
-        // Short "Pop" Sound (Base64)
         const clickSound = new Audio("data:audio/wav;base64,UklGRi4AAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="); 
-        // Note: The base64 above is a dummy empty placeholder for brevity in preview. 
-        // Below is a working short "Pop" Base64 string for the actual interaction:
         const realClickSound = new Audio("data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWgAAAA0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABMbYW1lMy4xMDAuMQAAAAAAAAAAAAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA"); 
 
         function triggerSensory() {
-            // Vibrate (Haptic)
             if(navigator.vibrate) navigator.vibrate(15);
-            
-            // Audio (Sound)
-            // Using a simple short beep creation approach if Base64 fails or for broader compat
-            // For this specific requirement, we try the object.
             try {
                 realClickSound.currentTime = 0;
-                realClickSound.play().catch(e => { /* Autoplay policies might block without interaction */ });
+                realClickSound.play().catch(e => {});
             } catch(e) {}
         }
 
-        // Attach triggers to Radio Buttons (Offers)
         document.querySelectorAll('input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', triggerSensory);
         });
-
-        // Attach triggers to Submit Buttons
         document.querySelectorAll('.submit-btn').forEach(btn => {
             btn.addEventListener('click', triggerSensory);
         });
 
-
-        // --- 1. SMART STICKY BAR LOGIC ---
+        // --- 1. SMART STICKY BAR LOGIC (UPDATED) ---
+        let lastScroll = 0;
         const stickyBar = document.querySelector('.mobile-sticky-bar');
         const heroSection = document.querySelector('#hero');
-        
-        if (stickyBar && heroSection) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) {
-                        stickyBar.classList.add('visible');
-                    } else {
-                        stickyBar.classList.remove('visible');
-                    }
-                });
-            }, { threshold: 0 });
-            observer.observe(heroSection);
-        }
+        const announcementBar = document.querySelector('.announcement-bar');
+        const siteHeader = document.querySelector('.site-header');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            // Smart Header Logic
+            if (currentScroll > lastScroll && currentScroll > 50) {
+                // Scrolling Down -> Hide
+                announcementBar.classList.add('is-hidden');
+                siteHeader.classList.add('is-hidden');
+            } else {
+                // Scrolling Up -> Show
+                announcementBar.classList.remove('is-hidden');
+                siteHeader.classList.remove('is-hidden');
+            }
+            lastScroll = currentScroll;
+
+            // Existing Sticky Bottom Bar Logic
+            if (stickyBar && heroSection) {
+                const heroBottom = heroSection.getBoundingClientRect().bottom;
+                if (heroBottom < 0) {
+                    stickyBar.classList.add('visible');
+                } else {
+                    stickyBar.classList.remove('visible');
+                }
+            }
+        });
 
         // --- 2. UPDATED TIMER LOGIC (EVERGREEN) ---
         function startPersistentTimer() {
@@ -613,7 +664,6 @@
                 const now = new Date().getTime();
                 let timeLeft = Math.floor((endTime - now) / 1000);
                 
-                // If expired, reset the timer to ensure it's "evergreen"
                 if (timeLeft < 0) {
                     endTime = new Date().getTime() + (duration * 1000);
                     localStorage.setItem('prumysl_timer_end', endTime);
