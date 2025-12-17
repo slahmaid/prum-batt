@@ -312,12 +312,7 @@
 
                 <div class="section-header-center"><h2>استفد من العرض الحصري</h2></div>
                 
-                <form id="topOrderForm" action="https://formsubmit.co/slahmaid@gmail.com" method="POST">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_subject" value="New Prumysl Order!">
-                    <input type="hidden" name="_next" id="top_next" value=""> 
-
+                <form id="topOrderForm">
                     <div class="offer-options">
                         <div class="offer-card">
                             <input type="radio" name="offer-top" id="top-offer1" value="149" checked>
@@ -533,12 +528,7 @@
             <div class="form-container">
                 <div class="section-header-center"><h2>للطلب املأ الاستمارة</h2></div>
                 
-                <form id="orderForm" action="https://formsubmit.co/slahmaid@gmail.com" method="POST">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="hidden" name="_subject" value="New Prumysl Order!">
-                    <input type="hidden" name="_next" id="bottom_next" value=""> 
-
+                <form id="orderForm">
                     <div class="offer-options">
                         <div class="offer-card">
                             <input type="radio" name="offer" id="offer1" value="149" checked>
@@ -606,6 +596,9 @@
     </div>
 
     <script>
+        // --- 🔴 CONFIGURATION: YOUR GOOGLE SCRIPT URL ---
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxoqpWW0HamyC-laMjQ834jAjdUg59W0bQu7s_p1hnxG66gdd9jbN3Guf-1ZxqgJwgn/exec";
+
         // --- 1. KEYBOARD STICKY FIX ---
         const stickyBar = document.querySelector('.mobile-sticky-bar');
         const inputs = document.querySelectorAll('input');
@@ -614,7 +607,7 @@
             input.addEventListener('blur', () => stickyBar.style.display = 'flex');
         });
 
-        // --- 2. DYNAMIC SCROLL & WHATSAPP LINKS & HAPTICS ---
+        // --- 2. DYNAMIC SCROLL & UI LOGIC ---
         let lastScroll = 0;
         const siteHeader = document.querySelector('.site-header');
         const announcementBar = document.querySelector('.announcement-bar');
@@ -637,59 +630,87 @@
             }
         });
 
+        // --- 3. WHATSAPP & HAPTIC LOGIC ---
         function updateWa() {
-            // Haptic feedback on selection (Android)
             if (navigator.vibrate) navigator.vibrate(50);
             
             const selected = document.querySelector('input[name="offer"]:checked') || document.querySelector('input[name="offer-top"]:checked');
-            const btns = document.querySelectorAll('.sticky-btn-whatsapp, .btn-whatsapp-secondary');
+            const btns = document.querySelectorAll('.sticky-btn-whatsapp');
+            
             if(selected) {
-                const txt = selected.value === '149' ? "Salam, bghit l'offre dyal *Pack 1 (149DH)*" : "Salam, bghit l'offre dyal *Pack 2 (249DH)*";
-                // ⚠️ REPLACE PHONE NUMBER BELOW
+                const val = selected.value === '149' ? "Pack 1 (149 DH)" : "Pack 2 (249 DH)";
+                // ⚠️ REPLACE WITH YOUR REAL PHONE NUMBER
+                const txt = `Salam, bghit l'offre dyal *${val}*`;
                 btns.forEach(btn => btn.href = `https://wa.me/212600000000?text=${encodeURIComponent(txt)}`);
             }
         }
         document.querySelectorAll('input[type="radio"]').forEach(o => o.addEventListener('change', updateWa));
 
-        // --- 3. FORM VALIDATION & ANTI-DUPLICATE ---
-        function setupForm(formId, nextInputId, radioName) {
+        // --- 4. TRUSTED GOOGLE SHEETS SUBMISSION LOGIC ---
+        function setupTrustedForm(formId, radioName) {
             const form = document.getElementById(formId);
-            const nextInput = document.getElementById(nextInputId);
+            if (!form) return;
             const submitBtn = form.querySelector('.submit-btn');
             
             form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Stop standard browser submit
+
+                // A. Phone Validation
                 const phoneInput = form.querySelector('input[name="phone"]');
-                const phone = phoneInput.value.replace(/\s/g, ''); // Clean spaces
+                const phone = phoneInput.value.replace(/\s/g, ''); 
                 
                 // Strict Moroccan Regex (05/06/07 + 8 digits)
                 if(!phone.match(/^0[567][0-9]{8}$/)) {
-                    e.preventDefault();
                     alert("المرجو إدخال رقم هاتف صحيح (مثال: 0612345678)");
                     phoneInput.classList.add('input-error');
                     setTimeout(() => phoneInput.classList.remove('input-error'), 500);
                     return;
                 }
                 
-                // PREVENT DOUBLE SUBMISSIONS
+                // B. Lock UI to prevent double clicks
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = "جاري الإرسال...";
+                submitBtn.innerHTML = "جاري الحفظ الآمن...";
                 submitBtn.style.opacity = "0.8";
                 
-                const val = document.querySelector(`input[name="${radioName}"]:checked`).value;
-                const orderId = 'ORD-' + Math.floor(Math.random() * 90000);
+                // C. Prepare Data
+                const formData = new FormData(form);
+                const selectedOffer = document.querySelector(`input[name="${radioName}"]:checked`).value;
                 
-                // Construct robust absolute URL
-                const currentPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
-                const nextUrl = window.location.origin + currentPath + `/thank-you.html?id=${orderId}&val=${val}`;
-                
-                nextInput.value = nextUrl;
+                // D. Send to Google Apps Script
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.result === 'success') {
+                        // Success! Redirect to Thank You Page
+                        const currentPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+                        // Clean URL construction
+                        const baseUrl = window.location.origin + currentPath;
+                        // Handle root path case
+                        const finalBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+                        
+                        window.location.href = `${finalBase}/thank-you.html?id=${data.id}&val=${selectedOffer}`;
+                    } else {
+                        throw new Error("Script returned error");
+                    }
+                })
+                .catch(error => {
+                    console.error('Submission Error:', error);
+                    // Fallback in case of script error (rare)
+                    alert("حدث خطأ بسيط في الاتصال. المرجو المحاولة مرة أخرى أو الطلب عبر واتساب.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = "أرسل الطلب الآن";
+                });
             });
         }
         
-        setupForm('topOrderForm', 'top_next', 'offer-top');
-        setupForm('orderForm', 'bottom_next', 'offer');
+        // Initialize the two forms
+        setupTrustedForm('topOrderForm', 'offer-top');
+        setupTrustedForm('orderForm', 'offer');
 
-        // --- 4. PERSISTENT TIMER & FAQ ---
+        // --- 5. PERSISTENT TIMER & FAQ ---
         let time = localStorage.getItem('prumysl_timer') || 7200; 
         
         setInterval(() => {
