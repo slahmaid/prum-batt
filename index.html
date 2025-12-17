@@ -6,15 +6,18 @@
     <title>Prumysl - بطاريات الشوفو القابلة للشحن</title>
     
     <meta name="description" content="بطاريات Type-D كبيرة قابلة للشحن لسخان الماء. شرارة قوية وتوفير دائم. توصيل مجاني في المغرب.">
-    
     <meta name="theme-color" content="#d32f2f">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <meta property="og:title" content="Prumysl - البطارية اللي غاتهنيك من الشوفو">
+    <meta property="og:description" content="وداعاً لمفاجآت الماء البارد. شحنة واحدة تدوم 6 أشهر! اطلبها الآن.">
+    <meta property="og:image" content="img/Hero.jpg">
+    <meta property="og:type" content="product">
 
+    <link rel="icon" type="image/png" href="img/prumysl logo.png">
     <link rel="preload" as="image" href="img/Hero.jpg">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <style>
         /* --- CSS VARIABLES --- */
@@ -23,17 +26,17 @@
             --secondary-color: #ffffff;
             --accent-color: #d32f2f;
             --success-color: #27ae60;
+            --whatsapp-bg: #E5DDD5; 
             --bg-color: #f4f6f8; 
             --text-color: #333333;
-            --whatsapp-color: #25D366;
-            --font-heading: 'Amiri Quran', serif;
+            --font-heading: 'Cairo', sans-serif;
             --font-body: 'Tajawal', sans-serif;
             --border-radius: 12px;
             --shadow-card: 0 4px 20px rgba(0,0,0,0.06);
             --announcement-height: 36px;
         }
 
-        /* --- GLOBAL RESET & TYPOGRAPHY --- */
+        /* --- GLOBAL RESET --- */
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         
         body {
@@ -42,26 +45,32 @@
             color: var(--text-color);
             overflow-x: hidden;
             line-height: 1.6;
-            padding-bottom: 80px;
+            padding-bottom: 90px; /* Space for split sticky bar */
             padding-top: var(--announcement-height);
         }
 
         h1, h2, h3, .hero-title, .section-title { font-family: var(--font-heading); }
-        
         a { text-decoration: none; color: inherit; }
         img { max-width: 100%; display: block; }
         html { scroll-behavior: smooth; scroll-padding-top: 60px; }
 
-        /* --- TOUCH FEEDBACK (APP FEEL) --- */
-        button:active, 
-        .submit-btn:active, 
-        .box-item:active,
-        .mobile-sticky-btn:active,
-        .offer-label:active,
-        .feature-card:active {
-            transform: scale(0.98);
-            transition: transform 0.1s;
+        /* --- ANIMATIONS --- */
+        @keyframes pulse-btn {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+            100% { transform: scale(1); }
         }
+        @keyframes border-pulse {
+            0% { border-color: #eee; }
+            50% { border-color: #f39c12; box-shadow: 0 0 15px rgba(243, 156, 18, 0.2); }
+            100% { border-color: #eee; }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .input-error { border-color: #e74c3c !important; animation: shake 0.4s ease-in-out; }
 
         /* --- ANNOUNCEMENT BAR --- */
         .announcement-bar {
@@ -72,8 +81,6 @@
             transition: transform 0.3s ease;
         }
         .announcement-bar.is-hidden { transform: translateY(-100%); }
-        .announcement-text { animation: slideDownFade 0.8s ease-out; display: flex; align-items: center; gap: 5px; }
-        @keyframes slideDownFade { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* --- HEADER --- */
         .site-header { 
@@ -83,13 +90,12 @@
             transition: transform 0.3s ease;
         }
         .site-header.is-hidden { transform: translateY(-120px); }
-
         .header-content { max-width: 1200px; margin: 0 auto; height: 100%; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
         .logo img { max-height: 40px; width: auto; }
-        .header-cta { background-color: var(--primary-color); color: var(--secondary-color); padding: 8px 20px; font-size: 15px; border-radius: 8px; font-weight: 700; }
-        @media (max-width: 768px) { .header-cta { display: none; } }
+        .header-cta { background-color: var(--primary-color); color: var(--secondary-color); padding: 8px 20px; font-size: 15px; border-radius: 8px; font-weight: 700; font-family: var(--font-heading); }
+        @media (max-width: 768px) { .header-cta { display: none; } .header-content { justify-content: center; } }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO --- */
         .hero-section { 
             position: relative; height: 75vh; min-height: 500px; width: 100%; 
             background-image: url('img/Hero.jpg'); background-size: cover; background-position: center; 
@@ -97,232 +103,187 @@
         }
         .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.7) 100%); z-index: 1; }
         .hero-content { position: relative; z-index: 2; max-width: 600px; padding: 0 20px; color: #fff; text-align: center; margin: 0 auto; }
-        
-        /* Updated Fluid Typography */
-        .hero-title { 
-            font-size: clamp(28px, 8vw, 45px); /* Scales between 28px and 45px based on screen width */
-            line-height: 1.3; 
-            margin-bottom: 15px; 
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5); 
-        }
-        
-        .hero-subtitle { font-size: 18px; margin-bottom: 25px; font-weight: 500; opacity: 0.95; }
-        .hero-cta { 
-            background-color: #fff; color: #000; padding: 16px 45px; font-size: 18px; 
-            border-radius: 50px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: inline-block; 
-        }
+        .hero-title { font-size: clamp(28px, 8vw, 45px); line-height: 1.3; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); font-weight: 800; }
+        .hero-cta { background-color: #fff; color: #000; padding: 16px 45px; font-size: 18px; border-radius: 50px; font-weight: 800; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: inline-block; font-family: var(--font-heading); }
 
-        /* --- SECTIONS GENERAL --- */
+        /* --- SECTIONS --- */
         section { padding: 40px 15px; }
         .container { max-width: 1100px; margin: 0 auto; }
         .section-header-center { text-align: center; margin-bottom: 30px; }
-        .section-header-center h2 { font-size: 28px; color: var(--primary-color); position: relative; display: inline-block; }
+        .section-header-center h2 { font-size: 28px; color: var(--primary-color); font-weight: 800; }
 
-        /* --- FEATURES --- */
+        /* --- FEATURES & BOX --- */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .feature-card { background: #fff; padding: 25px; text-align: center; border-radius: var(--border-radius); box-shadow: var(--shadow-card); }
         .feature-icon { width: 50px; height: 50px; margin-bottom: 15px; fill: var(--primary-color); }
-        .feature-title { font-size: 20px; margin-bottom: 10px; font-family: var(--font-heading); }
         .compatibility-tag { display: inline-block; background: #f0f0f0; color: #555; padding: 4px 10px; border-radius: 4px; font-size: 12px; margin-top: 5px; font-weight: bold; }
-
-        /* --- BOX CONTENTS --- */
+        
         .box-grid { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; text-align: center; margin-top: 20px; }
         .box-item { background: #fff; padding: 20px; border-radius: 15px; width: 100%; max-width: 300px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #eee; }
-        .box-img-wrapper { height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background: #fcfcfc; border-radius: 10px; overflow: hidden; border: 1px dashed #ddd; }
-        .box-img-wrapper img { max-height: auto; width: auto; }
-        .box-item h3 { color: var(--primary-color); margin-bottom: 5px; font-size: 18px; }
-        .box-item p { font-size: 14px; color: #666; line-height: 1.4; }
+        .box-img-wrapper { height: 160px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; background: #fcfcfc; border-radius: 10px; overflow: hidden; }
+        .box-img-wrapper img { width: auto; max-height: 80%; }
 
-        /* --- HOW TO CHARGE --- */
+        /* --- STEPS & SPECS --- */
         .steps-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
         .step-card { background: #fff; padding: 20px; border-radius: 12px; position: relative; border: 1px solid #eee; box-shadow: var(--shadow-card); }
         .step-img-holder { width: 100%; height: 180px; background: #f9f9f9; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .step-number { position: absolute; top: -10px; right: -10px; width: 35px; height: 35px; background: var(--accent-color); color: #fff; font-weight: bold; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .step-card h4 { margin-bottom: 8px; font-size: 18px; }
-        .step-card p { font-size: 14px; color: #555; }
+        .step-number { position: absolute; top: -10px; right: -10px; width: 35px; height: 35px; background: var(--accent-color); color: #fff; font-weight: bold; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
 
-        /* --- TECH SPECS --- */
-        .specs-wrapper { max-width: 800px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-card); border: 1px solid #eee; }
-        .specs-table { width: 100%; border-collapse: collapse; }
-        .specs-table tr { border-bottom: 1px solid #eee; }
-        .specs-table tr:last-child { border-bottom: none; }
-        .specs-table td { padding: 15px; text-align: right; font-size: 15px; }
-        .specs-table td:first-child { background: #fdfdfd; font-weight: bold; width: 35%; color: #333; border-left: 1px solid #eee; }
-
-        /* --- SAVINGS CHART --- */
+        /* --- SAVINGS --- */
         .savings-box { background: #fff; padding: 25px 20px; border-radius: 12px; margin: 0 auto; box-shadow: var(--shadow-card); max-width: 600px; text-align: center; }
         .bar-chart { margin-top: 20px; display: flex; flex-direction: column; gap: 12px; }
-        .bar-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
         .bar-track { flex-grow: 1; background: #eee; border-radius: 6px; height: 30px; position: relative; overflow: hidden; }
         .bar-fill { height: 100%; display: flex; align-items: center; padding-right: 10px; color: #fff; font-size: 10px; font-weight: bold; }
         .bar-fill.red { background-color: #e74c3c; width: 95%; }
         .bar-fill.green { background-color: #27ae60; width: 45%; }
-        .bar-label { font-weight: bold; font-size: 14px; width: 80px; text-align: left; }
+        .bar-row { display: flex; align-items: center; gap: 10px; }
+        .bar-label { width: 80px; text-align: left; font-weight: bold; }
 
-        /* --- MOBILE SCROLL BEHAVIOR SPLIT --- */
+        /* --- MOBILE SCROLLING --- */
         @media (max-width: 768px) {
-            .marquee-wrapper { overflow: hidden; width: 100%; mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to left, transparent, black 10%, black 90%, transparent); }
-            .reviews-grid.mobile-scroll-container { display: flex !important; flex-wrap: nowrap !important; gap: 20px; width: max-content; animation: scroll-rtl 30s linear infinite; padding: 0 10px; }
-            .reviews-grid.mobile-scroll-container:hover, .reviews-grid.mobile-scroll-container:active { animation-play-state: paused; }
-            
-            /* Enhanced Gallery Scroll */
-            .gallery-grid.mobile-scroll-container { 
+            .gallery-grid.mobile-scroll-container, .whatsapp-scroll-container { 
                 display: flex !important; flex-wrap: nowrap !important; gap: 15px; 
-                padding-bottom: 20px; margin: 0 -15px; 
-                padding-left: 20px; padding-right: 20px; /* Peek effect */
-                overflow-x: auto; scroll-snap-type: x mandatory; 
-                animation: none !important; 
-                -ms-overflow-style: none; 
+                padding-bottom: 20px; overflow-x: auto; scroll-snap-type: x mandatory; 
+                margin: 0 -15px; padding-left: 20px; padding-right: 20px;
             }
-            /* Custom Scrollbar for visual cue */
-            .gallery-grid.mobile-scroll-container::-webkit-scrollbar { display: block; height: 4px; }
-            .gallery-grid.mobile-scroll-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
-            .gallery-grid.mobile-scroll-container::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
-
-            .mobile-scroll-item { flex: 0 0 280px; width: 280px; }
-            .gallery-grid .mobile-scroll-item { flex: 0 0 85%; width: 85%; scroll-snap-align: center; }
+            .mobile-scroll-item { flex: 0 0 85%; width: 85%; scroll-snap-align: center; }
         }
-        @keyframes scroll-rtl { 0% { transform: translateX(0); } 100% { transform: translateX(50%); } }
         @media (min-width: 769px) {
             .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
-            .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+            .whatsapp-scroll-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         }
 
-        /* --- GALLERY & REVIEWS --- */
-        .gallery-item { border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-card); aspect-ratio: 1/1; background: #ddd; position: relative; }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
-        .review-card { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); height: 100%; border: 1px solid #eee; }
-        .stars { color: #f1c40f; margin-bottom: 10px; letter-spacing: 2px; }
-        .review-text { font-size: 15px; margin-bottom: 15px; color: #555; }
-        .reviewer-info { display: flex; align-items: center; border-top: 1px solid #f0f0f0; padding-top: 12px; }
-        .avatar-circle { width: 40px; height: 40px; background: #333; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-left: 12px; font-weight: bold; flex-shrink: 0; }
-        .verified-badge { font-size: 11px; color: #27ae60; background: #e8f8f0; padding: 2px 8px; border-radius: 4px; font-weight: bold; display: inline-block; margin-top: 2px; }
+        /* --- WHATSAPP STYLE REVIEWS --- */
+        .whatsapp-section { background-color: #E5DDD5; /* WhatsApp Wall BG */ }
+        .wa-bubble {
+            background: #fff; border-radius: 7px; padding: 10px 12px;
+            position: relative; box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            font-size: 14px; margin-bottom: 10px; text-align: right;
+            border-top-right-radius: 0; max-width: 100%;
+        }
+        .wa-bubble::after {
+            content: ""; position: absolute; top: 0; right: -10px;
+            width: 0; height: 0; border: 10px solid transparent; 
+            border-top-color: #fff; border-left: 0; border-right: 0;
+        }
+        .wa-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; border-bottom: 1px solid #f0f0f0; padding-bottom: 6px; }
+        .wa-avatar { width: 32px; height: 32px; border-radius: 50%; background: #ddd; object-fit: cover; }
+        .wa-name { font-weight: bold; color: #075e54; font-size: 14px; }
+        .wa-meta { font-size: 10px; color: #999; margin-top: 6px; display: flex; justify-content: flex-end; align-items: center; gap: 4px; }
+        .wa-ticks { color: #34b7f1; font-size: 14px; } /* Blue ticks */
 
-        /* --- FAQ SECTION --- */
+        /* --- FAQ --- */
         .faq-item { background: #fff; margin-bottom: 10px; border-radius: 8px; border: 1px solid #eee; overflow: hidden; }
-        .faq-question { padding: 15px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; background: #fdfdfd; }
-        .faq-question::after { content: '+'; font-size: 20px; color: var(--primary-color); }
-        .faq-answer { padding: 0 15px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; color: #555; line-height: 1.5; font-size: 14px; }
+        .faq-question { padding: 15px; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-question::after { content: '+'; font-size: 20px; }
+        .faq-answer { padding: 0 15px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; color: #555; font-size: 14px; }
         .faq-item.active .faq-answer { padding: 15px; max-height: 200px; border-top: 1px solid #eee; }
         .faq-item.active .faq-question::after { content: '-'; }
 
-        /* --- FOMO & ORDER FORM --- */
-        .fomo-section { background: #fff5f5; text-align: center; border-top: 1px solid #ffdcdc; border-bottom: 1px solid #ffdcdc; }
+        /* --- FORM & FOMO --- */
+        .fomo-section { background: #fff5f5; text-align: center; padding: 20px; border-top: 1px solid #ffdcdc; border-bottom: 1px solid #ffdcdc; }
         .countdown-timer { display: flex; justify-content: center; gap: 10px; margin: 15px 0; }
         .time-block { background: #fff; padding: 5px 10px; border-radius: 6px; border: 1px solid #ffcccc; min-width: 60px; }
-        .time-number { display: block; font-weight: 800; font-size: 20px; color: var(--accent-color); font-family: sans-serif; }
+        .time-number { font-weight: 800; font-size: 20px; color: var(--accent-color); font-family: sans-serif; }
         
         .form-container { 
-            max-width: 500px; margin: 0 auto; 
-            background: #fff; padding: 30px 20px; 
-            border-radius: 16px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+            max-width: 500px; margin: 0 auto; background: #fff; padding: 30px 20px; 
+            border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
         }
-        .progress-wrapper { margin-bottom: 25px; }
-        .progress-text { display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; color: var(--success-color); margin-bottom: 6px; font-family: var(--font-body); }
-        .progress-bar-bg { width: 100%; height: 8px; background-color: #f0f0f0; border-radius: 10px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #27ae60, #2ecc71); border-radius: 10px; width: 85%; animation: fillUp 1s ease-out; }
-        @keyframes fillUp { from { width: 0%; } to { width: 85%; } }
-        .form-group { margin-bottom: 20px; text-align: right; }
+        .progress-bar-bg { width: 100%; height: 8px; background-color: #f0f0f0; border-radius: 10px; overflow: hidden; margin-bottom: 25px; margin-top: 5px; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #27ae60, #2ecc71); width: 85%; }
+        
+        .form-group { margin-bottom: 20px; text-align: right; position: relative; }
         .form-label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; }
-        .form-input { 
-            width: 100%; padding: 16px; 
-            font-size: 16px; border: 2px solid #eee; border-radius: 10px; 
-            font-family: var(--font-body); background: #fcfcfc;
-            scroll-margin-top: 100px; 
+        
+        /* ULTRA-POLISH: INPUT ICONS */
+        .input-icon-wrap { position: relative; }
+        .input-icon-wrap svg {
+            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            width: 20px; height: 20px; fill: #999; z-index: 10;
         }
+        .form-input { 
+            width: 100%; padding: 16px; padding-right: 45px; /* Space for icon */
+            font-size: 16px; border: 2px solid #eee; border-radius: 10px; 
+            font-family: var(--font-body); background: #fcfcfc; 
+        }
+        input[type="tel"] { direction: ltr; text-align: right; } /* Fix Arabic phone input bug */
         .form-input:focus { border-color: var(--primary-color); background: #fff; }
+        
         .offer-options { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
         .offer-card { position: relative; }
         .offer-card input { display: none; }
         .offer-label {
             display: flex; justify-content: space-between; align-items: center;
             padding: 18px; border: 2px solid #eee; border-radius: 12px;
-            cursor: pointer; transition: all 0.2s; background: #fff;
+            cursor: pointer; background: #fff; transition: 0.2s;
         }
-        .offer-card input:checked + .offer-label {
-            border-color: var(--success-color);
-            background-color: #f0fff4;
-            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.15);
-        }
-        .offer-card input:checked + .offer-label .price-text { color: var(--success-color); }
-        .price-text { font-weight: 800; font-size: 18px; font-family: sans-serif; dir: ltr; }
-        .best-seller-badge {
-            background: linear-gradient(45deg, #f1c40f, #f39c12);
-            color: #fff; font-size: 11px; padding: 4px 8px;
-            border-radius: 20px; font-weight: bold; margin-right: 8px;
-            box-shadow: 0 2px 5px rgba(243, 156, 18, 0.4);
-            animation: pulse-gold 2s infinite; display: inline-block;
-        }
-        @keyframes pulse-gold {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.7); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(243, 156, 18, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(243, 156, 18, 0); }
-        }
+        /* Highlight the best seller */
+        .offer-card.highlight .offer-label { animation: border-pulse 2s infinite; }
+        .offer-card input:checked + .offer-label { animation: none; border-color: var(--success-color); background-color: #f0fff4; box-shadow: 0 4px 12px rgba(39, 174, 96, 0.15); }
+        .best-seller-badge { background: #f39c12; color: #fff; font-size: 10px; padding: 3px 8px; border-radius: 20px; margin-right: 5px; }
+
         .submit-btn {
-            width: 100%; padding: 18px;
-            background: var(--primary-color); color: #fff;
+            width: 100%; padding: 18px; background: var(--primary-color); color: #fff;
             font-size: 20px; font-weight: 800; border: none; border-radius: 10px;
-            cursor: pointer; font-family: var(--font-body);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            cursor: pointer; font-family: var(--font-heading); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: pulse-btn 2.5s infinite; transition: all 0.3s ease;
         }
-        .btn-whatsapp-secondary {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            width: 100%; padding: 14px; margin-top: 10px;
-            background-color: transparent; border: 2px solid #25D366;
-            color: #25D366; font-weight: 700; font-size: 16px; border-radius: 10px;
-            text-decoration: none; transition: all 0.2s; font-family: var(--font-body);
-        }
-        .btn-whatsapp-secondary:hover { background-color: #f0fff4; }
-        .btn-whatsapp-secondary svg { width: 20px; height: 20px; fill: currentColor; }
-        .guarantee-text {
-            color: #27ae60; font-weight: 700; font-size: 14px;
-            text-align: center; margin-top: 12px; border: 1px dashed #27ae60;
-            padding: 8px; border-radius: 8px; background: #f0fff4;
+        .submit-btn:disabled { background: #777; cursor: not-allowed; animation: none; opacity: 0.8; }
+        
+        /* ULTRA-FINAL: VISUAL TRUST BADGE */
+        .trust-badge {
+            margin-top: 15px; padding: 10px; background: #f0fff4; border: 1px dashed #27ae60;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
 
-        /* --- FOOTER & STICKY BTNS --- */
-        .site-footer { background: #111; color: #888; padding: 40px 20px 20px; text-align: center; font-size: 14px; }
-        
+        /* --- SPLIT MOBILE STICKY BAR --- */
         .mobile-sticky-bar { 
-            position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: #fff; padding: 12px 15px; 
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.1); 
-            z-index: 999; border-top: 1px solid #f0f0f0;
+            position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; 
+            padding: 10px 15px; box-shadow: 0 -4px 20px rgba(0,0,0,0.1); z-index: 999;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
             transform: translateY(100%); transition: transform 0.3s ease-out;
-            padding-bottom: max(12px, env(safe-area-inset-bottom));
+            display: flex; gap: 10px; align-items: center;
         }
         .mobile-sticky-bar.visible { transform: translateY(0); }
         
-        /* HACK: Hide sticky bar when keyboard is open (input focused) */
-        body:has(input:focus) .mobile-sticky-bar { transform: translateY(100%) !important; }
-
-        .mobile-sticky-btn { 
-            display: block; width: 100%; background: var(--primary-color); color: #fff; 
-            text-align: center; padding: 14px; border-radius: 50px; 
-            font-size: 18px; font-weight: 800; position: relative; overflow: hidden;
+        .sticky-btn-primary { 
+            flex: 2; background: var(--primary-color); color: #fff; 
+            text-align: center; padding: 12px; border-radius: 8px; font-weight: 800; font-size: 16px; font-family: var(--font-heading);
         }
-        .mobile-sticky-btn::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
-            animation: shimmer 3s infinite;
-        }
-        @keyframes shimmer { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-        .whatsapp-float { 
-            position: fixed; bottom: 85px; right: 20px; width: 55px; height: 55px; 
-            background: var(--whatsapp-color); border-radius: 50%; 
+        .sticky-btn-whatsapp { 
+            flex: 1; background: #25D366; color: #fff; 
+            text-align: center; padding: 12px; border-radius: 8px; 
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1000;
         }
-        .whatsapp-float svg { width: 30px; fill: #fff; }
-        @media screen and (max-height: 500px) { .mobile-sticky-bar, .whatsapp-float { display: none !important; } }
+        .sticky-btn-whatsapp svg { width: 24px; fill: white; }
 
+        /* HACK: Hide sticky bar when keyboard is open (input focused) */
+        body:has(input:focus) .mobile-sticky-bar { display: none !important; }
+
+        .site-footer { background: #111; color: #888; padding: 40px 20px; text-align: center; font-size: 14px; margin-bottom: 60px; }
+        .footer-links { margin-top: 15px; }
+        .footer-links a { color: #888; margin: 0 10px; text-decoration: underline; font-size: 12px; }
     </style>
+    
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    // REPLACE WITH YOUR PIXEL ID
+    fbq('init', 'YOUR_PIXEL_ID');
+    fbq('track', 'PageView');
+    </script>
 </head>
 <body>
 
     <div class="announcement-bar">
-        <span class="announcement-text">توصيل مجاني لجميع المدن المغربية 🇲🇦 🚚</span>
+        <span>توصيل مجاني لجميع المدن المغربية 🇲🇦 🚚</span>
     </div>
 
     <header class="site-header">
@@ -336,7 +297,7 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 class="hero-title">الماء سخون ديما<br>وبأقل تكلفة!</h1>
-            <p class="hero-subtitle">وداعاً لمفاجآت الماء البارد في الصباح. بطاريات Prumysl تهنيك من "الحجر تقادا" وتضمن لك دوش سخون ديما.</p>
+            <p class="hero-subtitle">وداعاً لمفاجآت الماء البارد. بطاريات Prumysl تهنيك من "الحجر تقادا" وتضمن لك دوش سخون ديما.</p>
             <a href="#order" class="hero-cta">اطلبها الآن</a>
         </div>
     </section>
@@ -344,58 +305,94 @@
     <section class="order-section" style="background: #fff;">
         <div class="container">
             <div class="form-container">
-                <div class="progress-wrapper">
-                    <div class="progress-text">
-                        <span>اكتمل 85%</span>
-                        <span>الخطوة الأخيرة: تأكيد العنوان</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill"></div>
-                    </div>
+                <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 800; color: var(--success-color);">
+                    <span>اكتمل 85%</span><span>الخطوة الأخيرة</span>
                 </div>
+                <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
 
                 <div class="section-header-center"><h2>استفد من العرض الحصري</h2></div>
-                <form id="topOrderForm" action="#" method="POST">
+                
+                <form id="topOrderForm" action="https://formsubmit.co/YOUR_EMAIL@GMAIL.COM" method="POST">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_subject" value="New Prumysl Order!">
+                    <input type="hidden" name="_next" id="top_next" value=""> 
+
                     <div class="offer-options">
                         <div class="offer-card">
                             <input type="radio" name="offer-top" id="top-offer1" value="149" checked>
                             <label for="top-offer1" class="offer-label">
-                                <span>علبة واحدة (2 حبات)</span>
-                                <span class="price-text">149 DH</span>
+                                <span>علبة واحدة (2 حبات)</span><span style="font-weight:800; font-family:sans-serif;">149 DH</span>
                             </label>
                         </div>
-                        <div class="offer-card">
+                        <div class="offer-card highlight">
                             <input type="radio" name="offer-top" id="top-offer2" value="249">
                             <label for="top-offer2" class="offer-label">
-                                <span style="display:flex; align-items:center;">2 علب (4 حبات)<span class="best-seller-badge">الأكثر طلباً!</span></span>
-                                <span class="price-text">249 DH</span>
+                                <span style="display:flex; align-items:center;">2 علب (4 حبات)<span class="best-seller-badge">توفير!</span></span>
+                                <span style="font-weight:800; font-family:sans-serif;">249 DH</span>
                             </label>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label class="form-label">الاسم الكامل</label>
-                        <input type="text" name="fullname" class="form-input" placeholder="الاسم" required autocomplete="name">
+                        <div class="input-icon-wrap">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            <input type="text" name="fullname" class="form-input" placeholder="الاسم" required autocomplete="name">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">رقم الهاتف</label>
-                        <input type="tel" id="top-phone" name="phone" class="form-input" placeholder="06XXXXXXXX" required autocomplete="tel" inputmode="numeric" pattern="[0-9]*">
+                        <div class="input-icon-wrap">
+                            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                            <input type="tel" name="phone" class="form-input" placeholder="06XXXXXXXX" required dir="ltr" autocomplete="tel" inputmode="numeric">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">المدينة</label>
-                        <input type="text" name="city" class="form-input" placeholder="المدينة" required autocomplete="address-level2">
+                        <div class="input-icon-wrap">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <input type="text" name="city" list="moroccan-cities" class="form-input" placeholder="اختار المدينة..." required autocomplete="address-level2">
+                        </div>
                     </div>
                     
-                    <button type="submit" id="topSubmitBtn" class="submit-btn">أرسل الطلب الآن</button>
-                    <a href="https://wa.me/212600000000?text=Salam%20bghit%20offer%20Prumysl" class="btn-whatsapp-secondary">
-                        <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.66.729 5.148 2.012 7.29L2.3 29.7l6.535-1.688A13.934 13.934 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5c-2.27 0-4.406-.68-6.223-1.848l-.445-.285-3.926 1.015 1.066-3.804-.293-.473A11.45 11.45 0 0 1 4.5 16C4.5 9.658 9.658 4.5 16 4.5S27.5 9.658 27.5 16 22.342 27.5 16 27.5z"/></svg>
-                        أو اطلب عبر واتساب 💬
-                    </a>
-                    <p class="guarantee-text">✅ ضمان الرضا: قلّب المنتج قبل ما تخلص</p>
+                    <button type="submit" class="submit-btn">أرسل الطلب الآن</button>
+                    
+                    <div class="trust-badge">
+                        <span style="font-size: 24px;">👁️</span>
+                        <div style="text-align: right; line-height: 1.2;">
+                            <strong style="color: #27ae60; font-size: 14px;">حل الكولية وقلب سلعتك عاد خلص!</strong>
+                            <div style="font-size: 11px; color: #555;">ما تخلص والو حتى تأكد 100%</div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </section>
+
+    <datalist id="moroccan-cities">
+        <option value="Casablanca (الدار البيضاء)">
+        <option value="Rabat (الرباط)">
+        <option value="Marrakech (مراكش)">
+        <option value="Tanger (طنجة)">
+        <option value="Agadir (أكادير)">
+        <option value="Fes (فاس)">
+        <option value="Meknes (مكناس)">
+        <option value="Oujda (وجدة)">
+        <option value="Kenitra (القنيطرة)">
+        <option value="Salé (سلا)">
+        <option value="Tetouan (تطوان)">
+        <option value="Temara (تمارة)">
+        <option value="Safi (آسفي)">
+        <option value="Mohammedia (المحمدية)">
+        <option value="El Jadida (الجديدة)">
+        <option value="Beni Mellal (بني ملال)">
+        <option value="Nador (الناظور)">
+        <option value="Laayoune (العيون)">
+        <option value="Dakhla (الداخلة)">
+        <option value="Errachidia (الرشيدية)">
+        <option value="Ouarzazate (ورزازات)">
+    </datalist>
 
     <section class="features-section">
         <div class="container">
@@ -405,7 +402,6 @@
                     <svg class="feature-icon" viewBox="0 0 24 24"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
                     <h3 class="feature-title">شرارة قوية</h3>
                     <p style="font-size:14px;color:#666;">قوة 1.5V ثابتة لتشغيل السخان فوراً.</p>
-                    <span class="compatibility-tag">متوافق مع (Junkers, Fagor, Chaffoteaux...)</span>
                 </div>
                 <div class="feature-card">
                     <svg class="feature-icon" viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
@@ -426,25 +422,16 @@
             <div class="section-header-center"><h2>شنو كايوصلك فالعلبة؟</h2></div>
             <div class="box-grid">
                 <div class="box-item">
-                    <div class="box-img-wrapper">
-                        <img src="img/Feature-3.jpg" alt="2 Batteries" loading="lazy"> 
-                    </div>
+                    <div class="box-img-wrapper"><img src="img/Feature-3.jpg" alt="2 Batteries" loading="lazy"></div>
                     <h3>2 بطاريات Type-D</h3>
-                    <p>بطاريات كبيرة (الليثيوم) بسعة عالية وجهد 1.5V ثابت.</p>
                 </div>
                 <div class="box-item">
-                    <div class="box-img-wrapper">
-                        <img src="img/Box-grid-2.jpg" alt="USB Cable" loading="lazy"> 
-                    </div>
+                    <div class="box-img-wrapper"><img src="img/Box-grid-2.jpg" alt="USB Cable" loading="lazy"></div>
                     <h3>كابل شحن مزدوج</h3>
-                    <p>كابل واحد برأسين (Type-C) لشحن البطاريتين في نفس الوقت.</p>
                 </div>
                 <div class="box-item">
-                    <div class="box-img-wrapper">
-                        <img src="img/Feature-1.jpg" alt="Packaging" loading="lazy"> 
-                    </div>
+                    <div class="box-img-wrapper"><img src="img/Feature-1.jpg" alt="Packaging" loading="lazy"></div>
                     <h3>علبة الحماية</h3>
-                    <p>علبة صلبة لتخزين البطاريات والحفاظ عليها.</p>
                 </div>
             </div>
         </div>
@@ -452,131 +439,63 @@
 
     <section class="how-it-works">
         <div class="container">
-            <div class="section-header-center"><h2>طريقة الاستعمال والشحن</h2></div>
+            <div class="section-header-center"><h2>طريقة الاستعمال</h2></div>
             <div class="steps-container">
                 <div class="step-card">
                     <div class="step-number">1</div>
-                    <div class="step-img-holder">
-                        <img src="img/How-to-1.jpg" alt="Plug in" loading="lazy">
-                    </div>
+                    <div class="step-img-holder"><img src="img/How-to-1.jpg" alt="Plug in" loading="lazy"></div>
                     <h4>ركب الكابل</h4>
-                    <p>أدخل كابل USB-C مباشرة في منفذ البطارية (لا تحتاج شاحن خاص).</p>
+                    <p>أدخل كابل USB-C مباشرة في البطارية.</p>
                 </div>
-                
                 <div class="step-card">
                     <div class="step-number">2</div>
-                    <div class="step-img-holder">
-                        <img src="img/How-to-2.jpg" alt="LED Indicators" loading="lazy">
-                    </div>
+                    <div class="step-img-holder"><img src="img/How-to-2.jpg" alt="LED Indicators" loading="lazy"></div>
                     <h4>راقب الضوء</h4>
                     <p>ضوء أخضر 🟢 = مشحونة</p>
                 </div>
-                
                 <div class="step-card">
                     <div class="step-number">3</div>
-                    <div class="step-img-holder">
-                        <img src="img/Feature-5.jpg" alt="Install in Heater" loading="lazy">
-                    </div>
+                    <div class="step-img-holder"><img src="img/Feature-5.jpg" alt="Install" loading="lazy"></div>
                     <h4>استمتع بالدفء</h4>
-                    <p>ركبها في السخان واستمتع بـ 4 إلى 6 أشهر من الاستعمال.</p>
+                    <p>ركبها في السخان واستمتع بـ 4 أشهر من الاستعمال.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="savings-section">
+    <section class="whatsapp-section" style="padding: 40px 10px;">
         <div class="container">
-            <div class="savings-box">
-                <h3 style="font-family: var(--font-heading); font-size: 22px;">استثمار ذكي vs تضييع المال</h3>
-                <div class="bar-chart">
-                    <div class="bar-row">
-                        <span class="bar-label">بطاريات عادية</span>
-                        <div class="bar-track">
-                            <div class="bar-fill red">300 درهم/سنة</div>
+            <div class="section-header-center"><h2 style="color:#075e54;">آراء الزبائن عبر واتساب</h2></div>
+            
+            <div class="whatsapp-scroll-container">
+                <div class="mobile-scroll-item">
+                    <div class="wa-bubble">
+                        <div class="wa-header">
+                            <img src="https://ui-avatars.com/api/?name=Rachid+B&background=075e54&color=fff" class="wa-avatar">
+                            <span class="wa-name">Rachid Bennani</span>
                         </div>
-                    </div>
-                    <div class="bar-row">
-                        <span class="bar-label">Prumysl</span>
-                        <div class="bar-track">
-                            <div class="bar-fill green">149 درهم مرة واحدة</div>
-                        </div>
+                        <p>صراحة هماوني! كنت ديما كنوجد مشكل مع الشوفو. ملي ركبت هاد الحجر، الشرارة ولات مجهدة.</p>
+                        <div class="wa-meta">10:30 AM <span class="wa-ticks">✓✓</span></div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="tech-specs-section">
-        <div class="container">
-            <div class="section-header-center"><h2>المواصفات التقنية الدقيقة</h2></div>
-            <div class="specs-wrapper">
-                <table class="specs-table">
-                    <tr>
-                        <td><strong>النوع (Type)</strong></td>
-                        <td>D-Size (بطارية كبيرة) Lithium-ion</td>
-                    </tr>
-                    <tr>
-                        <td><strong>الجهد (Voltage)</strong></td>
-                        <td>1.5V (Constant) <span style="font-size:12px; color:#666;">*تحافظ على قوتها حتى تفرغ</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>السعة (Capacity)</strong></td>
-                        <td>12,000 mWh <span style="font-size:12px; color:#27ae60; font-weight:bold;">(قوية جداً)</span></td>
-                    </tr>
-                    <tr>
-                        <td><strong>منفذ الشحن</strong></td>
-                        <td>USB Type-C (مدمج في البطارية)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>مدة الشحن الكامل</strong></td>
-                        <td>1.5 - 2 ساعة فقط</td>
-                    </tr>
-                    <tr>
-                        <td><strong>دورة الحياة</strong></td>
-                        <td>أكثر من 1000 شحنة (5 سنوات+)</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <section class="gallery-section">
-        <div class="container">
-            <div class="section-header-center"><h2>صور واقعية للمنتج</h2></div>
-            <div class="gallery-grid mobile-scroll-container">
-                <div class="gallery-item mobile-scroll-item"><img src="img/Feature-1.jpg" alt="بطارية" loading="lazy"></div>
-                <div class="gallery-item mobile-scroll-item"><img src="img/Feature-2.jpg" alt="USB" loading="lazy"></div>
-                <div class="gallery-item mobile-scroll-item"><img src="img/Feature-3.jpg" alt="تركيب" loading="lazy"></div>
-                <div class="gallery-item mobile-scroll-item"><img src="img/Feature-4.jpg" alt="حجم" loading="lazy"></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="reviews-section">
-        <div class="container">
-            <div class="section-header-center"><h2>آراء الزبائن</h2></div>
-            <div class="marquee-wrapper">
-                <div class="reviews-grid mobile-scroll-container">
-                    <div class="mobile-scroll-item">
-                        <div class="review-card">
-                            <div class="stars">★★★★★</div>
-                            <p class="review-text">"صراحة هماوني! كنت ديما كنوجد مشكل مع الشوفو في البرد. ملي ركبت هاد الحجر، الشرارة ولات مجهدة والماء كيسخن دغيا. الله يرحم الوالدين."</p>
-                            <div class="reviewer-info"><div class="avatar-circle">R</div><div><h4>رشيد بناني</h4><span class="verified-badge">✓ شراء مؤكد</span></div></div>
+                <div class="mobile-scroll-item">
+                    <div class="wa-bubble">
+                        <div class="wa-header">
+                            <img src="https://ui-avatars.com/api/?name=Laila+A&background=d32f2f&color=fff" class="wa-avatar">
+                            <span class="wa-name">Laila Alami</span>
                         </div>
+                        <p>فكرة واعرة ديال USB، مابقيتش كنقلب على الحجر كل سيمانة. التوصيل كان سريع.</p>
+                        <div class="wa-meta">Yesterday <span class="wa-ticks">✓✓</span></div>
                     </div>
-                    <div class="mobile-scroll-item">
-                        <div class="review-card">
-                            <div class="stars">★★★★★</div>
-                            <p class="review-text">"فكرة واعرة ديال USB، مابقيتش كنقلب على الحجر."</p>
-                            <div class="reviewer-info"><div class="avatar-circle">L</div><div><h4>ليلى ع.</h4><span class="verified-badge">✓ شراء مؤكد</span></div></div>
+                </div>
+                <div class="mobile-scroll-item">
+                    <div class="wa-bubble">
+                        <div class="wa-header">
+                            <img src="https://ui-avatars.com/api/?name=Mohamed+T&background=f39c12&color=fff" class="wa-avatar">
+                            <span class="wa-name">Mohamed Tazi</span>
                         </div>
-                    </div>
-                    <div class="mobile-scroll-item">
-                        <div class="review-card">
-                            <div class="stars">★★★★★</div>
-                            <p class="review-text">"الجودة ممتازة والتوصيل سريع لتمارة."</p>
-                            <div class="reviewer-info"><div class="avatar-circle">M</div><div><h4>محمد ت.</h4><span class="verified-badge">✓ شراء مؤكد</span></div></div>
-                        </div>
+                        <p>Produit top. J'ai reçu la commande à Tanger en 24h. Merci bcp.</p>
+                        <div class="wa-meta">Today <span class="wa-ticks">✓✓</span></div>
                     </div>
                 </div>
             </div>
@@ -586,129 +505,120 @@
     <section class="faq-section" style="background: #f9f9f9;">
         <div class="container" style="max-width:800px;">
             <div class="section-header-center"><h2>أسئلة يتكرر طرحها</h2></div>
-            
             <div class="faq-item">
                 <div class="faq-question">واش هاد البطاريات تركب لأي شوفو؟</div>
-                <div class="faq-answer">نعم، البطاريات من نوع Type-D (الكبيرة) وهي المعيار القياسي لجميع سخانات الغاز في المغرب مثل Junkers, Fagor, Chaffoteaux, Siemens وغيرها.</div>
+                <div class="faq-answer">نعم، البطاريات من نوع Type-D (الكبيرة) وهي المعيار القياسي لجميع سخانات الغاز في المغرب مثل Junkers, Fagor, Chaffoteaux.</div>
             </div>
-
-            <div class="faq-item">
-                <div class="faq-question">واش خصني نشري شاحن خاص؟</div>
-                <div class="faq-answer">لا، لا تحتاج لشاحن خاص. البطاريات تشحن بواسطة كابل USB Type-C (مرفق في العلبة) ويمكنك استخدام شاحن هاتفك العادي.</div>
-            </div>
-
             <div class="faq-item">
                 <div class="faq-question">شحال كدوم الشحنة الواحدة؟</div>
                 <div class="faq-answer">حسب الاستعمال، ولكن في المتوسط تدوم الشحنة الواحدة بين 4 إلى 6 أشهر من الاستحمام اليومي.</div>
-            </div>
-
-            <div class="faq-item">
-                <div class="faq-question">كيفاش نعرفها عمرات (تشحنات)؟</div>
-                <div class="faq-answer">ملي كيولي أخضر ديما يعني راها عمرات 100%</div>
             </div>
         </div>
     </section>
 
     <section class="fomo-section">
         <div class="container">
-            <h3 style="margin-bottom:10px;">العرض ينتهي قريباً</h3>
-            <div class="countdown-timer" id="countdown">
-                <div class="time-block"><span class="time-number" id="hours">02</span><small>ساعة</small></div>
-                <div class="time-block"><span class="time-number" id="minutes">45</span><small>دقيقة</small></div>
-                <div class="time-block"><span class="time-number" id="seconds">30</span><small>ثانية</small></div>
+            <h3>العرض ينتهي قريباً</h3>
+            <div class="countdown-timer">
+                <div class="time-block"><span class="time-number" id="h">02</span></div>
+                <div class="time-block"><span class="time-number" id="m">45</span></div>
+                <div class="time-block"><span class="time-number" id="s">30</span></div>
             </div>
-            <p style="color:#d32f2f; font-weight:bold; font-size:14px;">تبقى 9 قطع فقط!</p>
+            <p style="color:#d32f2f; font-weight:bold;">تبقى 9 قطع فقط!</p>
         </div>
     </section>
 
     <section id="order" class="order-section">
         <div class="container">
             <div class="form-container">
-                <div class="progress-wrapper">
-                    <div class="progress-text">
-                        <span>اكتمل 85%</span>
-                        <span>الخطوة الأخيرة: تأكيد العنوان</span>
-                    </div>
-                    <div class="progress-bar-bg">
-                        <div class="progress-bar-fill"></div>
-                    </div>
-                </div>
-
                 <div class="section-header-center"><h2>للطلب املأ الاستمارة</h2></div>
-                <form id="orderForm" action="#" method="POST">
+                
+                <form id="orderForm" action="https://formsubmit.co/YOUR_EMAIL@GMAIL.COM" method="POST">
+                    <input type="hidden" name="_captcha" value="false">
+                    <input type="hidden" name="_template" value="table">
+                    <input type="hidden" name="_subject" value="New Prumysl Order!">
+                    <input type="hidden" name="_next" id="bottom_next" value=""> 
+
                     <div class="offer-options">
                         <div class="offer-card">
                             <input type="radio" name="offer" id="offer1" value="149" checked>
                             <label for="offer1" class="offer-label">
-                                <span>علبة واحدة (2 حبات)</span>
-                                <span class="price-text">149 DH</span>
+                                <span>علبة واحدة (2 حبات)</span><span style="font-weight:800; font-family:sans-serif;">149 DH</span>
                             </label>
                         </div>
-                        <div class="offer-card">
+                        <div class="offer-card highlight">
                             <input type="radio" name="offer" id="offer2" value="249">
                             <label for="offer2" class="offer-label">
-                                <span style="display:flex; align-items:center;">2 علب (4 حبات)<span class="best-seller-badge">الأكثر طلباً!</span></span>
-                                <span class="price-text">249 DH</span>
+                                <span style="display:flex; align-items:center;">2 علب (4 حبات)<span class="best-seller-badge">توفير!</span></span>
+                                <span style="font-weight:800; font-family:sans-serif;">249 DH</span>
                             </label>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">الاسم الكامل</label>
-                        <input type="text" name="fullname" class="form-input" required autocomplete="name">
+                        <div class="input-icon-wrap">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            <input type="text" name="fullname" class="form-input" required autocomplete="name">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">رقم الهاتف</label>
-                        <input type="tel" id="phone" name="phone" class="form-input" required autocomplete="tel" inputmode="numeric" pattern="[0-9]*">
-                        <div id="phone-error" style="color:red;display:none;font-size:12px;margin-top:5px;">رقم الهاتف غير صحيح</div>
+                        <div class="input-icon-wrap">
+                            <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                            <input type="tel" name="phone" class="form-input" required dir="ltr" autocomplete="tel" inputmode="numeric">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label">المدينة</label>
-                        <input type="text" name="city" class="form-input" required autocomplete="address-level2">
+                        <div class="input-icon-wrap">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            <input type="text" name="city" list="moroccan-cities" class="form-input" required autocomplete="address-level2">
+                        </div>
                     </div>
                     
-                    <button type="submit" id="submitBtn" class="submit-btn">أرسل الطلب الآن</button>
-                    <a href="https://wa.me/212600000000?text=Salam%20bghit%20offer%20Prumysl" class="btn-whatsapp-secondary">
-                        <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.66.729 5.148 2.012 7.29L2.3 29.7l6.535-1.688A13.934 13.934 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5c-2.27 0-4.406-.68-6.223-1.848l-.445-.285-3.926 1.015 1.066-3.804-.293-.473A11.45 11.45 0 0 1 4.5 16C4.5 9.658 9.658 4.5 16 4.5S27.5 9.658 27.5 16 22.342 27.5 16 27.5z"/></svg>
-                        أو اطلب عبر واتساب 💬
-                    </a>
-                    <p class="guarantee-text">✅ ضمان الرضا: قلّب المنتج قبل ما تخلص</p>
+                    <button type="submit" class="submit-btn">أرسل الطلب الآن</button>
+                    
+                    <div class="trust-badge">
+                        <span style="font-size: 24px;">👁️</span>
+                        <div style="text-align: right; line-height: 1.2;">
+                            <strong style="color: #27ae60; font-size: 14px;">حل الكولية وقلب سلعتك عاد خلص!</strong>
+                            <div style="font-size: 11px; color: #555;">ما تخلص والو حتى تأكد 100%</div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </section>
 
     <footer class="site-footer">
-        <p>© 2025 Prumysl Morocco</p>
+        <p>© 2025 Prumysl Morocco - جميع الحقوق محفوظة</p>
+        <div class="footer-links">
+            <a href="#">سياسة الخصوصية</a> | <a href="#">شروط الاستخدام</a>
+        </div>
     </footer>
 
     <div class="mobile-sticky-bar">
-        <a href="#order" class="mobile-sticky-btn">اطلب الآن - 149 درهم</a>
+        <a href="#order" class="sticky-btn-primary">اطلب الآن - 149 DH</a>
+        <a href="https://wa.me/212600000000" class="sticky-btn-whatsapp">
+            <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.66.729 5.148 2.012 7.29L2.3 29.7l6.535-1.688A13.934 13.934 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5c-2.27 0-4.406-.68-6.223-1.848l-.445-.285-3.926 1.015 1.066-3.804-.293-.473A11.45 11.45 0 0 1 4.5 16C4.5 9.658 9.658 4.5 16 4.5S27.5 9.658 27.5 16 22.342 27.5 16 27.5z"/></svg>
+        </a>
     </div>
 
-    <a href="https://wa.me/212600000000" class="whatsapp-float">
-        <svg viewBox="0 0 32 32"><path d="M16 2C8.268 2 2 8.268 2 16c0 2.66.729 5.148 2.012 7.29L2.3 29.7l6.535-1.688A13.934 13.934 0 0 0 16 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.5c-2.27 0-4.406-.68-6.223-1.848l-.445-.285-3.926 1.015 1.066-3.804-.293-.473A11.45 11.45 0 0 1 4.5 16C4.5 9.658 9.658 4.5 16 4.5S27.5 9.658 27.5 16 22.342 27.5 16 27.5z"/></svg>
-    </a>
-
     <script>
-        // --- SENSORY REINFORCEMENT ---
-        const clickSound = new Audio("data:audio/wav;base64,UklGRi4AAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="); 
-        const realClickSound = new Audio("data:audio/mp3;base64,//uQZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWgAAAA0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABMbYW1lMy4xMDAuMQAAAAAAAAAAAAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA//uQZAAABiQA0goAAAAAAA0goAAAABAAABBCbYwyu6gAAAAAABBAAA"); 
-
-        function triggerSensory() {
-            if(navigator.vibrate) navigator.vibrate(15);
-            try { realClickSound.currentTime = 0; realClickSound.play().catch(e => {}); } catch(e) {}
-        }
-
-        document.querySelectorAll('input[type="radio"]').forEach(radio => radio.addEventListener('change', triggerSensory));
-        document.querySelectorAll('.submit-btn').forEach(btn => btn.addEventListener('click', triggerSensory));
-
-        // --- SMART HEADER LOGIC ---
-        let lastScroll = 0;
+        // --- 1. KEYBOARD STICKY FIX ---
         const stickyBar = document.querySelector('.mobile-sticky-bar');
-        const heroSection = document.querySelector('#hero');
-        const announcementBar = document.querySelector('.announcement-bar');
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => stickyBar.style.display = 'none');
+            input.addEventListener('blur', () => stickyBar.style.display = 'flex');
+        });
+
+        // --- 2. DYNAMIC SCROLL & WHATSAPP LINKS & HAPTICS ---
+        let lastScroll = 0;
         const siteHeader = document.querySelector('.site-header');
+        const announcementBar = document.querySelector('.announcement-bar');
+        const heroSection = document.querySelector('#hero');
 
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
@@ -722,91 +632,82 @@
             lastScroll = currentScroll;
             if (stickyBar && heroSection) {
                 const heroBottom = heroSection.getBoundingClientRect().bottom;
-                if (heroBottom < 0) stickyBar.classList.add('visible');
+                if (heroBottom < 0 && !document.querySelector('input:focus')) stickyBar.classList.add('visible');
                 else stickyBar.classList.remove('visible');
             }
         });
 
-        // --- FAQ ACCORDION LOGIC ---
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                item.classList.toggle('active');
-            });
-        });
-
-        // --- TIMER LOGIC ---
-        function startPersistentTimer() {
-            const duration = (2 * 60 * 60) + (45 * 60);
-            let endTime = localStorage.getItem('prumysl_timer_end');
-            if (!endTime || isNaN(endTime)) {
-                endTime = new Date().getTime() + (duration * 1000);
-                localStorage.setItem('prumysl_timer_end', endTime);
+        function updateWa() {
+            // Haptic feedback on selection (Android)
+            if (navigator.vibrate) navigator.vibrate(50);
+            
+            const selected = document.querySelector('input[name="offer"]:checked') || document.querySelector('input[name="offer-top"]:checked');
+            const btns = document.querySelectorAll('.sticky-btn-whatsapp, .btn-whatsapp-secondary');
+            if(selected) {
+                const txt = selected.value === '149' ? "Salam, bghit l'offre dyal *Pack 1 (149DH)*" : "Salam, bghit l'offre dyal *Pack 2 (249DH)*";
+                // ⚠️ REPLACE PHONE NUMBER BELOW
+                btns.forEach(btn => btn.href = `https://wa.me/212600000000?text=${encodeURIComponent(txt)}`);
             }
-            setInterval(() => {
-                const now = new Date().getTime();
-                let timeLeft = Math.floor((endTime - now) / 1000);
-                if (timeLeft < 0) {
-                    endTime = new Date().getTime() + (duration * 1000);
-                    localStorage.setItem('prumysl_timer_end', endTime);
-                    timeLeft = duration;
-                }
-                const h = Math.floor(timeLeft / 3600);
-                const m = Math.floor((timeLeft % 3600) / 60);
-                const s = timeLeft % 60;
-                document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
-                document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
-                document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
-            }, 1000);
         }
-        startPersistentTimer();
+        document.querySelectorAll('input[type="radio"]').forEach(o => o.addEventListener('change', updateWa));
 
-        // --- FORM SUBMISSION ---
-        const JSONBIN_ID = '6936d11cae596e708f8b6b42';
-        const JSONBIN_KEY = '$2a$10$W7Y1w05rI7FhqCSUCB/tRuDJYO2fRlTwgv2s3je3OlExS3oOz9UzG';
-
-        async function sendOrderToBin(orderData) {
-            const url = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
-            try {
-                const getRes = await fetch(url + '/latest', { headers: { 'X-Master-Key': JSONBIN_KEY } });
-                let current = [];
-                if(getRes.ok) { const d = await getRes.json(); current = d.record; }
-                if(!Array.isArray(current)) current = [];
-                current.push(orderData);
-                await fetch(url, { method: 'PUT', headers: {'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY}, body: JSON.stringify(current)});
-                return true;
-            } catch(e) { return false; }
-        }
-
-        function setupForm(formId, btnId) {
+        // --- 3. FORM VALIDATION & ANTI-DUPLICATE ---
+        function setupForm(formId, nextInputId, radioName) {
             const form = document.getElementById(formId);
-            if(!form) return;
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const btn = document.getElementById(btnId);
-                const formData = new FormData(form);
-                const phone = formData.get('phone');
-                if(!phone.match(/^(05|06|07)[0-9]{8}$/)) {
-                    alert('المرجو إدخال رقم هاتف صحيح');
+            const nextInput = document.getElementById(nextInputId);
+            const submitBtn = form.querySelector('.submit-btn');
+            
+            form.addEventListener('submit', function(e) {
+                const phoneInput = form.querySelector('input[name="phone"]');
+                const phone = phoneInput.value.replace(/\s/g, ''); // Clean spaces
+                
+                // Strict Moroccan Regex (05/06/07 + 8 digits)
+                if(!phone.match(/^0[567][0-9]{8}$/)) {
+                    e.preventDefault();
+                    alert("المرجو إدخال رقم هاتف صحيح (مثال: 0612345678)");
+                    phoneInput.classList.add('input-error');
+                    setTimeout(() => phoneInput.classList.remove('input-error'), 500);
                     return;
                 }
-                btn.innerText = "جاري الإرسال...";
-                btn.disabled = true;
-                const orderId = 'ORD-' + Math.floor(Math.random() * 100000);
-                const success = await sendOrderToBin({
-                    Order_ID: orderId,
-                    Customer_Name: formData.get('fullname'),
-                    Phone_Number: phone,
-                    City_Address: formData.get('city'),
-                    Price: formData.get('offer') || formData.get('offer-top'),
-                    Order_Date: new Date().toISOString()
-                });
-                if(success) window.location.href = `thank-you.html?id=${orderId}`;
-                else { btn.innerText = "أرسل الطلب الآن"; btn.disabled = false; alert('خطأ في الاتصال'); }
+                
+                // PREVENT DOUBLE SUBMISSIONS
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = "جاري الإرسال...";
+                submitBtn.style.opacity = "0.8";
+                
+                const val = document.querySelector(`input[name="${radioName}"]:checked`).value;
+                const orderId = 'ORD-' + Math.floor(Math.random() * 90000);
+                
+                // Construct robust absolute URL
+                const currentPath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/'));
+                const nextUrl = window.location.origin + currentPath + `/thank-you.html?id=${orderId}&val=${val}`;
+                
+                nextInput.value = nextUrl;
             });
         }
-        setupForm('orderForm', 'submitBtn');
-        setupForm('topOrderForm', 'topSubmitBtn');
+        
+        setupForm('topOrderForm', 'top_next', 'offer-top');
+        setupForm('orderForm', 'bottom_next', 'offer');
+
+        // --- 4. PERSISTENT TIMER & FAQ ---
+        let time = localStorage.getItem('prumysl_timer') || 7200; 
+        
+        setInterval(() => {
+            time--;
+            if(time < 0) time = 7200;
+            localStorage.setItem('prumysl_timer', time);
+
+            let h = Math.floor(time/3600);
+            let m = Math.floor((time%3600)/60);
+            let s = time%60;
+            document.getElementById('h').innerText = h < 10 ? '0'+h : h;
+            document.getElementById('m').innerText = m < 10 ? '0'+m : m;
+            document.getElementById('s').innerText = s < 10 ? '0'+s : s;
+        }, 1000);
+
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => q.parentElement.classList.toggle('active'));
+        });
     </script>
 </body>
 </html>
