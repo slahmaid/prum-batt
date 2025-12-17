@@ -7,136 +7,126 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
     <style>
-        :root {
-            --primary-color: #000000;
-            --success-color: #27ae60;
-            --bg-color: #f9f9f9;
-        }
-
+        :root { --primary: #000; --success: #27ae60; --bg: #f8f9fa; --accent: #d32f2f; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            font-family: 'Amiri Quran', serif;
-            background-color: var(--bg-color);
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 20px;
+            font-family: 'Cairo', sans-serif; background-color: var(--bg); color: #333;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 20px; text-align: center;
         }
-
-        .thank-you-card {
-            background: white;
-            max-width: 600px;
-            width: 100%;
-            padding: 50px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            animation: slideUp 0.6s ease-out;
+        .card {
+            background: white; max-width: 550px; width: 100%; padding: 40px 25px;
+            border-radius: 24px; box-shadow: 0 20px 60px -10px rgba(0,0,0,0.08);
+            position: relative; overflow: hidden; animation: slideUp 0.6s ease-out;
         }
-
-        .checkmark-wrapper {
+        .icon-box {
             width: 80px; height: 80px; background-color: #e8f8f0; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;
         }
+        .icon { width: 40px; height: 40px; fill: var(--success); opacity: 0; animation: popIn 0.5s 0.3s forwards; }
+        
+        h1 { font-size: 28px; margin-bottom: 5px; color: #111; font-weight: 800; }
+        .order-pill { background: #f1f2f6; padding: 5px 15px; border-radius: 50px; display: inline-block; margin-bottom: 30px; font-size: 14px; font-weight: bold; color: #555; font-family: sans-serif; }
 
-        .checkmark-icon {
-            width: 40px; height: 40px; fill: var(--success-color);
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+        /* Timeline UI */
+        .timeline { text-align: right; position: relative; padding-right: 25px; border-right: 2px solid #eee; margin: 0 20px 30px 0; }
+        .t-item { position: relative; margin-bottom: 25px; }
+        .t-item:last-child { margin-bottom: 0; }
+        .t-dot {
+            width: 16px; height: 16px; background: #fff; border: 3px solid #ddd;
+            border-radius: 50%; position: absolute; right: -34px; top: 4px; z-index: 2;
         }
+        .t-dot.active { border-color: var(--success); background: var(--success); box-shadow: 0 0 0 3px #e8f8f0; }
+        .t-content h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+        .t-content p { font-size: 13px; color: #777; line-height: 1.4; margin: 0; }
 
-        h1 { font-size: 32px; margin-bottom: 10px; color: #1a1a1a; }
-        .order-id { color: #888; font-size: 14px; margin-bottom: 30px; font-family: sans-serif; }
-
-        .next-steps { background-color: #f8f8f8; border-radius: 10px; padding: 20px; margin-bottom: 30px; text-align: right; }
-        .step-item { display: flex; align-items: flex-start; margin-bottom: 15px; }
-        .step-item:last-child { margin-bottom: 0; }
-        .step-number {
-            background-color: var(--primary-color); color: white; width: 25px; height: 25px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 14px; margin-left: 15px; flex-shrink: 0; margin-top: 3px;
+        .btn { 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 16px; border-radius: 12px; text-decoration: none; 
+            font-weight: 700; font-size: 16px; margin-bottom: 12px; transition: 0.2s;
         }
-        .step-text h4 { font-size: 18px; margin-bottom: 5px; }
-        .step-text p { font-size: 14px; color: #666; line-height: 1.5; }
-
-        .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
-        .btn { padding: 12px 25px; border-radius: 6px; text-decoration: none; font-weight: bold; transition: 0.3s; display: inline-block; }
-        .btn-home { background-color: var(--primary-color); color: white; }
-        .btn-whatsapp { background-color: #25D366; color: white; }
-        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn:active { transform: scale(0.98); }
+        .btn-wa { background: #25D366; color: white; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.2); }
+        .btn-home { background: #f1f2f6; color: #333; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes popIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
-
-        @media (max-width: 500px) {
-            .thank-you-card { padding: 30px 20px; }
-            h1 { font-size: 26px; }
-            .btn-group { flex-direction: column; }
-            .btn { width: 100%; }
-        }
+        @keyframes popIn { from { opacity: 0; transform: scale(0); } to { opacity: 1; transform: scale(1); } }
     </style>
+
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    // ⚠️ REPLACE PIXEL ID
+    fbq('init', 'YOUR_PIXEL_ID');
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('id') || 'ORD-' + Math.floor(Math.random()*10000);
+    const orderVal = urlParams.get('val') || 149.00;
+    
+    fbq('track', 'Purchase', { currency: 'MAD', value: parseFloat(orderVal), order_id: orderId });
+    </script>
 </head>
 <body>
 
-    <div class="thank-you-card">
-        <div class="checkmark-wrapper">
-            <svg class="checkmark-icon" viewBox="0 0 24 24">
-                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-            </svg>
+    <div class="card">
+        <div class="icon-box">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
         </div>
 
-        <h1>تم استلام طلبك بنجاح!</h1>
-        <p class="order-id">رقم الطلب: #<span id="orderNum">...</span></p>
+        <h1>تم تسجيل طلبك بنجاح!</h1>
+        <div class="order-pill">رقم الطلب: #<span id="orderNum">...</span></div>
 
-        <div class="next-steps">
-            <div class="step-item">
-                <div class="step-number">1</div>
-                <div class="step-text">
-                    <h4>تأكيد الطلب</h4>
-                    <p>سيتصل بك فريقنا خلال 24 ساعة لتأكيد العنوان والطلب.</p>
+        <div class="timeline">
+            <div class="t-item">
+                <div class="t-dot active"></div>
+                <div class="t-content">
+                    <h4>تم الاستلام</h4>
+                    <p>توصلنا بمعلوماتك بنجاح.</p>
                 </div>
             </div>
-            <div class="step-item">
-                <div class="step-number">2</div>
-                <div class="step-text">
-                    <h4>يرجى الرد على الهاتف</h4>
-                    <p>من الضروري الرد على الهاتف ليتم شحن طلبيتك في أقرب وقت.</p>
+            <div class="t-item">
+                <div class="t-dot"></div>
+                <div class="t-content">
+                    <h4>تأكيد الهاتف (مهم جداً)</h4>
+                    <p>سيتصل بك فريقنا خلال 24 ساعة لتأكيد العنوان. <strong>يرجى الرد على الهاتف.</strong></p>
                 </div>
             </div>
-            <div class="step-item">
-                <div class="step-number">3</div>
-                <div class="step-text">
-                    <h4>الشحن والاستلام</h4>
-                    <p>الدفع سيكون عند الاستلام بعد معاينة المنتج.</p>
+            <div class="t-item">
+                <div class="t-dot"></div>
+                <div class="t-content">
+                    <h4>الشحن و التوصيل</h4>
+                    <p>الموزع سيقوم بتوصيل الطلب حتى باب منزلك.</p>
                 </div>
             </div>
         </div>
 
-        <div class="btn-group">
-            <a href="index.html" class="btn btn-home">العودة للرئيسية</a>
-            <a href="https://wa.me/212600000000" class="btn btn-whatsapp">تواصل معنا عبر واتساب</a>
-        </div>
+        <a href="https://wa.me/212600000000" class="btn btn-wa">
+            <svg width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.913.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 7.644c-.283.792-1.359 1.346-1.896 1.432-.49.078-1.127.106-1.785-.106-.549-.176-1.166-.465-1.922-1.076-.877-.709-1.545-1.603-1.661-1.777-.117-.175-.244-.555.008-1.01.168-.304.425-.561.579-.714.153-.153.208-.198.311-.198.102 0 .204.004.296.012.092.008.219-.044.341.25.127.305.433 1.065.474 1.141.041.077.067.167.014.269-.052.102-.078.167-.154.256-.077.09-.161.199-.23.272-.077.08-.158.167-.068.324.089.157.395.651.848 1.054.586.522 1.08.683 1.233.759.153.076.242.064.332-.038.089-.102.383-.446.485-.6.102-.153.204-.127.341-.076.138.051.869.41 1.018.486.149.076.248.114.284.178.036.063.036.368-.113.766z"/></svg>
+            تواصل معنا عبر واتساب
+        </a>
+        <a href="index.html" class="btn btn-home">العودة للرئيسية</a>
     </div>
 
     <script>
-        // Reads the 'id' from the URL (e.g., thank-you.html?id=ORD-12345)
-        const urlParams = new URLSearchParams(window.location.search);
-        const orderId = urlParams.get('id');
-        
-        if (orderId) {
-            document.getElementById('orderNum').innerText = orderId;
-        } else {
-            // Fallback if no ID is found
-            document.getElementById('orderNum').innerText = Math.floor(Math.random() * 90000) + 10000;
-        }
-        
-        console.log("Purchase Event Triggered");
+        document.getElementById('orderNum').innerText = orderId;
+        // Confetti
+        var duration = 2 * 1000;
+        var end = Date.now() + duration;
+        (function frame() {
+            confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+            confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+            if (Date.now() < end) requestAnimationFrame(frame);
+        }());
     </script>
-
 </body>
 </html>
