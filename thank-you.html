@@ -66,16 +66,22 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    // ⚠️ REPLACE PIXEL ID
-    fbq('init', 'YOUR_PIXEL_ID');
     
+    // Updated ID
+    fbq('init', '1397644105137818');
+    fbq('track', 'PageView');
+    
+    // Purchase Tracking Logic
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('id') || 'ORD-' + Math.floor(Math.random()*10000);
     const orderVal = urlParams.get('val') || 149.00;
     
     fbq('track', 'Purchase', { currency: 'MAD', value: parseFloat(orderVal), order_id: orderId });
     </script>
-</head>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1397644105137818&ev=PageView&noscript=1"
+    /></noscript>
+    </head>
 <body>
 
     <div class="card">
