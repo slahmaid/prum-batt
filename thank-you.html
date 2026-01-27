@@ -74,7 +74,7 @@
     // Purchase Tracking Logic
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('id') || 'ORD-' + Math.floor(Math.random()*10000);
-    const orderVal = urlParams.get('val') || 149.00;
+    const orderVal = urlParams.get('val') || 119;
     
     fbq('track', 'Purchase', { currency: 'MAD', value: parseFloat(orderVal), order_id: orderId });
     </script>
